@@ -24,3 +24,35 @@ done
 echo "$Flag"
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 sau khi chạy script ta nhận được flag cần tìm
+
+### Bổ sung script python cho bài này
+
+```
+#!/usr/bin/python3
+
+from pwn import *
+
+context.log_level = 'debug'
+
+flag = ""
+
+r = remote('83.136.253.5', 59517)
+
+for i in range(0, 150):
+        r.recvuntil(b'Which character (index) of the flag do you want? Enter an index:' )
+        r.sendline(str(i).encode())
+        line = r.recvline().decode().strip()
+        print(line)
+
+        if ":" in line:
+                char = line.split(":", 1)[1].strip() // Lấy chuỗi sau dấu ":"
+
+                if char != "":
+                        flag += char
+        if "}" in flag:
+                break
+
+print(flag)
+
+```
+
